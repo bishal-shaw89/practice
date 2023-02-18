@@ -4,7 +4,7 @@ const fs = require('fs');
 const server = http.createServer((req, res) => {
     const url = req.url;
     const method = req.method;
-    if (url === '/'){
+    if (url === '/') {
         res.write('<html>');
         res.write('<head><title>My first page</title></head>');
         res.write('<body><form action="/msg" method="POST"><input type="text" name="msg"><input type="submit" value="submit"></form></body>');
@@ -20,14 +20,14 @@ const server = http.createServer((req, res) => {
             const bodyParser = Buffer.concat(data).toString();
             const msg = bodyParser.split('=')[1];
             //fs.writeFileSync('message.txt', msg);
-            fs.writeFile('message.txt', msg, err =>{
+            fs.writeFile('message.txt', msg, err => {
                 res.statusCode = 302;
                 res.setHeader('Location', '/');
                 return res.end();
             });
         })
     }
-    res.setHeader('Content-Type','text/html');
+    res.setHeader('Content-Type', 'text/html');
     res.write('<html>');
     res.write('<head><title>My first page</title></head>');
     res.write('<body><h1>Welcome to Node Js Server.</h1></body>');
@@ -36,3 +36,31 @@ const server = http.createServer((req, res) => {
 })
 
 server.listen(3000);
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use('/add-product', (req, res, next) => {
+    res.send('<form action="/product" method="post"><input type="text" name="title"><button type="submit">Submit</button>');
+})
+
+//app.use will work for both post and get method
+// app.use('/product', (req, res, next) => {
+//     console.log(JSON.parse(JSON.stringify(req.body)));
+//     res.redirect('/');
+// })
+
+// app.post will only work for post method. and for get we will use app.get
+app.post('/product', (req, res, next) => {
+    console.log(JSON.parse(JSON.stringify(req.body)));
+    res.redirect('/');
+})
+
+app.use('/', (req, res, next) => {
+    res.send('<h1>Hello from Express!!</h1>');
+})
+
+app.listen(3000);
