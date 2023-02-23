@@ -41,13 +41,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const adminRoute = require('./routes/admin');
+//const adminData = require('./routes/admin');
 const shopRoute = require('./routes/shop');
+
+const pageNotFoundController = require("./controllers/404");
 
 const path = require('path');
 
 const app = express();
 
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/add-product', (req, res, next) => {
 //     res.send('<form action="/product" method="post"><input type="text" name="title"><button type="submit">Submit</button>');
@@ -66,13 +73,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // })
 
 // '/admin' is the filter for adminRoute, now only route with '/admin' will go inside adminRoute.
+//app.use('/admin', adminData.routes);
 app.use('/admin', adminRoute);
 
 app.use(shopRoute);
 
-app.use((req, res, next) => {
-    //res.status(404).send('<h1>Page not found</h1>')
-    res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
-})
+// app.use((req, res, next) => {
+//     //res.status(404).send('<h1>Page not found</h1>')
+//     //res.status(404).sendFile(path.join(__dirname, "views", "404.html"));
+//     res.status(404).render('404', { pageTitle: 'Page Not Found' });
+// })
 
-app.listen(3000);
+app.use(pageNotFoundController.pageNotFound)
+
+app.listen(3002);
