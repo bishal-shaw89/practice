@@ -86,4 +86,4 @@ app.use(shopRoute);
 
 app.use(pageNotFoundController.pageNotFound)
 
-app.listen(3002);
+app.listen(3000);
