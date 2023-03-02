@@ -1,3 +1,30 @@
+// const Sequelize = require('sequelize');
+
+// const sequelize = require('../util/database');
+
+// const Product = sequelize.define('product', {
+//   id: {
+//     type: Sequelize.INTEGER,
+//     autoIncrement: true,
+//     allowNull: false,
+//     primaryKey: true
+//   },
+//   title: Sequelize.STRING,
+//   price: {
+//     type: Sequelize.DOUBLE,
+//     allowNull: false
+//   },
+//   imageUrl: {
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   },
+//   description: {
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   }
+// });
+
+//const mongoConnect = require('../util/database');
 const getDb = require('../util/database').getDb;
 
 class Product {
@@ -10,9 +37,8 @@ class Product {
 
   save() {
     const db = getDb();
-    //db.collection('products').insertOne({ name: 'A book', price: 20 });// The object is the way in which data insert in collection.
-    db.collection('products')
-      .insertOne(this)
+    //db.collection('product').insertOne({ name: 'Book', price: 12 }); pass the value in object to insert.
+    db.collection('product').insertOne(this)
       .then(result => {
         console.log(result);
       })
