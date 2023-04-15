@@ -7,18 +7,54 @@
    <%- include('../includes/navigation.ejs') %>
 
     <main>
-        <form class="login-form" action="/signup" method="POST">
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+        <form class="login-form" action="/signup" method="POST" novalidate>
             <div class="form-control">
+                <% if (validationArray.find(e => e.param === 'email')) { %>
+                    <% var invalidInput = validationArray.find(e => e.param === 'email') %>
+                <% } %>
                 <label for="email">E-Mail</label>
-                <input type="email" name="email" id="email">
+                <input 
+                class="<%= invalidInput ? 'invalid' : '' %>"
+                type="email" 
+                name="email" 
+                id="email" 
+                value="<%= oldInput.email%>">
+                <% if (invalidInput) { %>
+                    <div class="validation-msg"><%= invalidInput.msg %></div>
+                <% } %>
             </div>
             <div class="form-control">
+                <% if (validationArray.find(e => e.param === 'password')) { %>
+                    <% var invalidInput = validationArray.find(e => e.param === 'password') %>
+                <% } %>
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password">
+                <input 
+                class="<%= invalidInput ? 'invalid' : '' %>"
+                type="password" 
+                name="password" 
+                id="password" 
+                value="<%= oldInput.password%>">
+                <% if (invalidInput) { %>
+                    <div class="validation-msg"><%= invalidInput.msg %></div>
+                <% } %>
             </div>
             <div class="form-control">
+                <% if (validationArray.find(e => e.param === 'confirmPassword')) { %>
+                    <% var invalidInput = validationArray.find(e => e.param === 'confirmPassword') %>
+                <% } %>
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" name="confirmPassword" id="confirmPassword">
+                <input 
+                class="<%= invalidInput ? 'invalid' : '' %>"
+                type="password" 
+                name="confirmPassword" 
+                id="confirmPassword" 
+                value="<%= oldInput.confirmPassword%>">
+                <% if (invalidInput) { %>
+                    <div class="validation-msg"><%= invalidInput.msg %></div>
+                <% } %>
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn" type="submit">Signup</button>

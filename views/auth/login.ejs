@@ -12,12 +12,34 @@
         <% } %>
         <form class="login-form" action="/login" method="POST">
             <div class="form-control">
+                <% if (validationArray.find(e => e.param === 'email')) { %>
+                    <% var invalidInput = validationArray.find(e => e.param === 'email') %>
+                <% } %>
                 <label for="email">E-Mail</label>
-                <input type="email" name="email" id="email">
+                <input 
+                class="<%= invalidInput ? 'invalid' : '' %>" 
+                type="email" 
+                name="email" 
+                id="email" 
+                value="<%= oldInput.email%>">
+                <% if (invalidInput) { %>
+                    <div class="validation-msg"><%= invalidInput.msg %></div>
+                <% } %>
             </div>
             <div class="form-control">
+                <% if (validationArray.find(e => e.param === 'password')) { %>
+                    <% var invalidInput = validationArray.find(e => e.param === 'password') %>
+                <% } %>
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password">
+                <input 
+                class="<%= invalidInput ? 'invalid' : '' %>" 
+                type="password" 
+                name="password" 
+                id="password" 
+                value="<%= oldInput.password%>">
+                <% if (invalidInput) { %>
+                    <div class="validation-msg"><%= invalidInput.msg %></div>
+                <% } %>
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn" type="submit">Login</button>

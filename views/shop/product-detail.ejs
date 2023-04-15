@@ -7,7 +7,8 @@
             <h1><%= product.title %></h1>
             <hr>
             <div class="image">
-                <img src="<%= product.imageUrl %>" alt="<%= product.title %>">
+                <!-- adding a '/' before the url means express will under will take the file from root -->
+                <img src="/<%= product.imageUrl %>" alt="<%= product.title %>">
             </div>
             <h2><%= product.price %></h2>
             <p><%= product.description %></p>
