@@ -11,3 +11,6 @@ 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
 
 // mailchimp unique id:
 // ca6b3478be
+
+// to create ssl certificate
+// openssl req -nodes -new -x509 -keyout server.key -out server.cert
