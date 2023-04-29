@@ -1,0 +1,3 @@
+tsc --init: to create tsconfig.json file.
+
+npm i --save-dev @types/node //after '@types' the package name should be mention to install the package so that typescript can generate suggestion.
