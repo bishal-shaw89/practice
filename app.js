@@ -1,70 +1,24 @@
-const path = require('path');
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const multer = require('multer');
-
-const feedRoutes = require('./routes/feed');
-const authRoutes = require('./routes/auth');
-
-const app = express();
-
-const fileStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'images');
-    },
-    filename: (req, file, cb) => {
-        cb(null, new Date().toISOString() + '-' + file.originalname);
+var num1Element = document.getElementById('num1'); // we are defining the element as 'HTMLInputElement' it is known as 'type casting'
+var num2Element = document.getElementById('num2');
+var btn = document.querySelector('button'); // we are setting the button cannot be null
+var numArray = [];
+var textArray = [];
+function add(num1, num2) {
+    if (typeof num1 === 'number' && typeof num2 === 'number') {
+        return num1 + num2;
     }
-});
-
-const fileFilter = (req, file, cb) => {
-    if (
-        file.mimetype === 'image/png' ||
-        file.mimetype === 'image/jpg' ||
-        file.mimetype === 'image/jpeg'
-    ) {
-        cb(null, true);
-    } else {
-        cb(null, false);
+    else if (typeof num1 === 'string' && typeof num2 === 'string') {
+        return num1 + ' ' + num2;
     }
-};
-
-// app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
-app.use(bodyParser.json()); // application/json
-app.use(
-    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
-);
-app.use('/images', express.static(path.join(__dirname, 'images')));
-
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'OPTIONS, GET, POST, PUT, PATCH, DELETE'
-    );
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
+    return +num1 + +num2;
+}
+btn.addEventListener('click', function () {
+    var num1 = num1Element.value;
+    var num2 = num2Element.value;
+    var numResult = add(+num1, +num2); // adding '+' sign in front of variables means we are converting the variables to number
+    numArray.push(numResult); // defining the output as number so that it can store the result in number array type.
+    //console.log(result);
+    var stringResult = add(num1, num2);
+    textArray.push(stringResult); // defining the output as string so that it can store the result in string array type.
+    console.log(numArray, textArray);
 });
-
-app.use('/feed', feedRoutes);
-app.use('/auth', authRoutes);
-
-app.use((error, req, res, next) => {
-    console.log(error);
-    const status = error.statusCode || 500;
-    const message = error.message;
-    const data = error.data;
-    res.status(status).json({ message: message, data: data });
-});
-
-mongoose
-    .connect(
-        'mongodb+srv://bishalshaw:WOhr2CwRkjHfuK9c@node.qd8frbo.mongodb.net/messages',
-        { useNewUrlParser: true, useUnifiedTopology: true }
-    )
-    .then(result => {
-        app.listen(8080);
-    })
-    .catch(err => console.log(err));
